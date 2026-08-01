@@ -1,0 +1,18 @@
+.kokpit-logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.kokpit-logo-image {
+  display: block;
+  width: auto;
+}
+
+.kokpit-logo--md .kokpit-logo-image {
+  height: 48px;
+}
+
+.kokpit-logo--lg .kokpit-logo-image {
+  height: 96px;
+}
