@@ -18,10 +18,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : 'Erro interno do servidor';
+    const message = HttpExceptionFilter.extractMessage(exception);
 
     response.status(status).json({
       statusCode: status,
@@ -29,5 +26,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
       path: ctx.getRequest().url,
       message,
     });
+  }
+
+  private static extractMessage(exception: unknown): string | string[] {
+    if (!(exception instanceof HttpException)) {
+      return 'Erro interno do servidor';
+    }
+
+    const response = exception.getResponse();
+
+    if (typeof response === 'string') {
+      return response;
+    }
+
+    const message = (response as { message?: string | string[] }).message;
+    return message ?? exception.message;
   }
 }
